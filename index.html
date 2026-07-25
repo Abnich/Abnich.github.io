@@ -2,26 +2,71 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>私人站点</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>野生站点</title>
     <style>
-        body{font-family:微软雅黑;text-align:center;margin-top:120px}
-        .error{color:red;font-size:20px}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+        }
+        .box {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+        .error-tip {
+            font-size: 22px;
+            color: #ff4d4f;
+            font-weight: bold;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 12px 0;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
 <script>
 // 在这里修改你的访问密码
-const secretPwd = "abc123456";
-let inputPwd = prompt("abc123456");
+const secretPwd = "通关指令";
+let inputPwd = prompt("芝麻开门");
 
 if(inputPwd !== secretPwd){
-    document.body.innerHTML = "<h1 class='error'>密码错误，无权访问</h1>";
-}else{
-    // 密码正确才显示下面真实内容
     document.body.innerHTML = `
-    <h1>Welcome</h1>
-    <p>这里可以放一些乱七八招的东西</p >
-    <p>这是一个奇怪的网站</p >
+    <div class="box">
+        <div class="error-tip">密码错误，无权访问本站</div>
+    </div>
+    `;
+}else{
+    document.body.innerHTML = `
+    <div class="box">
+        <h1>Welcome</h1>
+        <p>这里存放这乱七八糟的东西</p >
+        <p>创立时间：2026.7.25</p >
+        <p>内容持续更新中 ✨</p >
+    </div>
     `;
 }
 </script>
