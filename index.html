@@ -102,39 +102,23 @@ if(inputPwd !== secretPwd){
     </div>
     `;
 }else{
-    document.body.innerHTML = `
-<div class="box">
-    <div class="date">${getNowDate()}</div>
-    <h1>私人记事本</h1>
-    <textarea id="note" style="width:100%;height:200px;padding:10px;border-radius:8px;border:none;margin:15px 0;" placeholder="在这里填写你的笔记内容..."></textarea>
-    <div>
-        <button onclick="saveNote()" style="padding:8px 16px;margin:5px;background:#667eea;color:white;border:none;border-radius:6px;">保存笔记</button>
-        <button onclick="showNote()" style="padding:8px 16px;margin:5px;background:#764ba2;color:white;border:none;border-radius:6px;">查看已保存内容</button>
+  document.body.innerHTML = `
+    <div class="box">
+        <div class="date">${getNowDate()}</div>
+        <h1>Welcome</h1>
+        <p>这里存放着一些乱七八糟的东西</p >
+        <p>创立时间：2026.7.25</p >
+
+        <div class="menu">
+            <div class="menu-item">乱</div>
+            <div class="menu-item">七</div>
+            <div class="menu-item">八</div>
+            <div class="menu-item">遭</div>
+        </div>
+
+        <button class="back-btn" onclick="history.back()">返回上一页</button>
     </div>
-    <div id="showArea" style="margin-top:20px;white-space:pre-wrap;"></div>
-    <button class="back-btn" onclick="history.back()">返回上一页</button>
-</div>
-
-<script>
-// 读取本地存储的笔记
-window.onload = function(){
-    let saved = localStorage.getItem("myPrivateNote");
-    if(saved) document.getElementById("note").value = saved;
-}
-// 保存到浏览器本地
-function saveNote(){
-    let content = document.getElementById("note").value;
-    localStorage.setItem("myPrivateNote", content);
-    alert("笔记已保存到本地！");
-}
-// 展示内容
-function showNote(){
-    let content = localStorage.getItem("myPrivateNote");
-    document.getElementById("showArea").innerText = content || "暂无保存内容";
-}
-</script>
-`;
-
+    `;
 }
 </script>
 </body>
