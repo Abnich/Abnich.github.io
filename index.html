@@ -77,6 +77,40 @@
             font-weight: bold;
             cursor: pointer;
         }
+        /* 记事本新增样式 */
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            margin: 15px 0;
+            font-size: 15px;
+            resize: vertical;
+        }
+        .btn-group button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+        }
+        .save-btn {
+            background: #667eea;
+        }
+        .show-btn {
+            background: #764ba2;
+        }
+        .show-area {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            text-align: left;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            min-height: 60px;
+        }
     </style>
 </head>
 <body>
@@ -93,6 +127,17 @@ function getNowDate(){
     const day = d.getDate();
     const week = ["周日","周一","周二","周三","周四","周五","周六"][d.getDay()];
     return `${y}年${m}月${day}日 ${week}`;
+}
+
+// 记事本功能函数
+function saveNote(){
+    let content = document.getElementById("note").value;
+    localStorage.setItem("myPrivateNote", content);
+    alert("笔记已保存到本地浏览器！");
+}
+function showNote(){
+    let content = localStorage.getItem("myPrivateNote");
+    document.getElementById("showArea").innerText = content || "暂无保存的笔记内容";
 }
 
 if(inputPwd !== secretPwd){
@@ -116,8 +161,25 @@ if(inputPwd !== secretPwd){
             <div class="menu-item">遭</div>
         </div>
 
+        <!-- 记事本区域，直接嵌在原有内容下方 -->
+        <h3 style="margin-top:25px;">私人记事本</h3>
+        <textarea id="note" placeholder="在这里填写你的笔记内容..."></textarea>
+        <div class="btn-group">
+            <button class="save-btn" onclick="saveNote()">保存笔记</button>
+            <button class="show-btn" onclick="showNote()">查看已保存内容</button>
+        </div>
+        <div id="showArea" class="show-area"></div>
+
         <button class="back-btn" onclick="history.back()">返回上一页</button>
     </div>
+
+    <script>
+        // 页面加载时自动读取已保存的笔记
+        window.onload = function(){
+            let saved = localStorage.getItem("myPrivateNote");
+            if(saved) document.getElementById("note").value = saved;
+        }
+    </script>
     `;
 }
 </script>
