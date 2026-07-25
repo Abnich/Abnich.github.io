@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>私人站点</title>
+    <style>
+        body{font-family:微软雅黑;text-align:center;margin-top:120px}
+        .error{color:red;font-size:20px}
+    </style>
+</head>
+<body>
+<script>
+// 在这里修改你的访问密码
+const secretPwd = "abc123456";
+let inputPwd = prompt("abc123456");
+
+if(inputPwd !== secretPwd){
+    document.body.innerHTML = "<h1 class='error'>密码错误，无权访问</h1>";
+}else{
+    // 密码正确才显示下面真实内容
+    document.body.innerHTML = `
+    <h1>Welcome</h1>
+    <p>这里可以放一些乱七八招的东西</p >
+    <p>这是一个奇怪的网站</p >
+    `;
+}
+</script>
+</body>
+</html>
