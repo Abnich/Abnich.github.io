@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>野生站点</title>
+    <title>我的私人站点</title>
     <style>
         * {
             margin: 0;
@@ -27,7 +27,7 @@
             padding: 40px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             text-align: center;
-            max-width: 450px;
+            max-width: 500px;
             width: 100%;
         }
         .error-tip {
@@ -45,13 +45,55 @@
             margin: 12px 0;
             opacity: 0.9;
         }
+        .date {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
+        .menu {
+            margin: 30px 0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .menu-item {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .menu-item:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .back-btn {
+            margin-top: 20px;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            background: #fff;
+            color: #667eea;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 <script>
-// 在这里修改你的访问密码
-const secretPwd = "芝麻开门";
-let inputPwd = prompt("通关指令");
+// 修改你的访问密码
+const secretPwd = "阿里巴巴与四十大盗";
+let inputPwd = prompt("总不能是芝麻开门吧");
+
+// 获取当前日期
+function getNowDate(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = d.getMonth()+1;
+    const day = d.getDate();
+    const week = ["周日","周一","周二","周三","周四","周五","周六"][d.getDay()];
+    return `${y}年${m}月${day}日 ${week}`;
+}
 
 if(inputPwd !== secretPwd){
     document.body.innerHTML = `
@@ -62,10 +104,19 @@ if(inputPwd !== secretPwd){
 }else{
     document.body.innerHTML = `
     <div class="box">
-        <h1>Welcome</h1>
-        <p>这里存放这乱七八糟的东西</p >
+        <div class="date">${getNowDate()}</div>
+        <h1>野生站点</h1>
+        <p>这里存放着一些乱七八糟的东西</p >
         <p>创立时间：2026.7.25</p >
-        <p>内容持续更新中 ✨</p >
+
+        <div class="menu">
+            <div class="menu-item">乱</div>
+            <div class="menu-item">七</div>
+            <div class="menu-item">八</div>
+            <div class="menu-item">遭</div>
+        </div>
+
+        <button class="back-btn" onclick="history.back()">返回上一页</button>
     </div>
     `;
 }
