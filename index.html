@@ -58,14 +58,14 @@
             flex-wrap: wrap;
         }
         .menu-item {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,0.2);
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
         }
         .menu-item:hover {
-            background: rgba(255,255,0.3);
+            background: rgba(255,255,255,0.3);
         }
         .back-btn {
             margin-top: 20px;
@@ -98,7 +98,7 @@
         .save-btn {
             background: #667eea;
         }
-        .show-btn {
+        .sync-btn {
             background: #764ba2;
         }
         .show-area {
@@ -114,8 +114,14 @@
 </head>
 <body>
 <script>
-// 修改你的访问密码
+// ========== 这里修改你的配置 ==========
 let secretPwd = "总不能是芝麻开门吧";
+const GITHUB_USER = "Abnich";
+const GITHUB_REPO = "Abnich.github.io";
+const GITHUB_TOKEN = "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";
+const FILE_PATH = "note.md";
+// ======================================
+
 let inputPwd = prompt("阿里巴巴与四十大盗");
 
 // 获取当前日期
@@ -128,15 +134,45 @@ function getNowDate(){
     return `${y}年${m}月${day}日 ${week}`;
 }
 
-// 记事本功能函数
-function saveNote(){
-    let content = document.getElementById("note").value;
-    localStorage.setItem("myPrivateNote", content);
-    alert("笔记已保存到本地浏览器！");
+// 从GitHub云端拉取笔记
+async function loadFromCloud(){
+    try {
+        let res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`);
+        let data = await res.json();
+        let content = atob(data.content);
+        document.getElementById("note").value = content;
+        alert("已同步云端最新笔记");
+    }catch(e){
+        alert("暂无云端笔记，首次使用请先保存");
+    }
 }
-function showNote(){
-    let content = localStorage.getItem("myPrivateNote");
-    document.getElementById("showArea").innerText = content || "暂无保存的笔记内容";
+
+// 保存笔记到GitHub云端
+async function saveToCloud(){
+    let content = document.getElementById("note").value;
+    try {
+        // 先获取文件sha
+        let res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`);
+        let data = await res.json();
+        let sha = data.sha;
+
+        // 更新文件
+        await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`,{
+            method: "PUT",
+            headers:{
+                "Authorization": `Bearer ${GITHUB_TOKEN}`,
+                "Accept":"application/vnd.github.v3+json"
+            },
+            body: JSON.stringify({
+                message: "更新私人笔记",
+                content: btoa(content),
+                sha: sha
+            })
+        });
+        alert("笔记已同步到GitHub云端！");
+    }catch(e){
+        alert("同步失败，请检查token和仓库配置");
+    }
 }
 
 if(inputPwd !== secretPwd){
@@ -163,17 +199,16 @@ if(inputPwd !== secretPwd){
         <h3 style="margin-top:25px;">私人记事本</h3>
         <textarea id="note" placeholder="在这里填写你的笔记内容..."></textarea>
         <div class="btn-group">
-            <button class="save-btn" onclick="saveNote()">保存笔记</button>
-            <button class="show-btn" onclick="showNote()">查看已保存内容</button>
+            <button class="save-btn" onclick="saveToCloud()">同步保存到云端</button>
+            <button class="sync-btn" onclick="loadFromCloud()">拉取云端笔记</button>
         </div>
         <div id="showArea" class="show-area"></div>
 
         <button class="back-btn" onclick="history.back()">返回上一页</button>
     </div>
     `;
-    // 页面加载后读取本地笔记，放在innerHTML外面执行，避免嵌套script失效
-    let saved = localStorage.getItem("myPrivateNote");
-    if(saved) document.getElementById("note").value = saved;
+    // 进入后自动拉取云端笔记
+    loadFromCloud();
 }
 </script>
 </body>
